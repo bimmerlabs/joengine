@@ -190,6 +190,16 @@ static void         jo_core_init_vdp(const jo_color back_color)
 {
 #if JO_COMPILE_USING_SGL
     slInitSystem(JO_TV_RES, (TEXTURE *)__jo_sprite_def, JO_FRAMERATE/*Real frame rate = (60 / JO_FRAMERATE)*/);
+    
+    #if (MY_CRAM_MODE == 0)
+        slColRAMMode(CRM16_1024);
+    #elif (MY_CRAM_MODE == 2)
+        slColRAMMode(CRM32_1024);
+    #endif
+    #if defined(MY_CRAM_OFFSET)
+        slColRAMOffsetSpr(MY_CRAM_OFFSET);
+    #endif
+    
     slTVOff();
     __jo_init_vdp2(back_color);
 #else
@@ -204,11 +214,11 @@ static void         jo_core_init_vdp(const jo_color back_color)
     JO_VDP1_EDSR = 0x3;
     JO_VDP1_PTMR = 0x2;
     JO_VDP1_MODR = 0x1100;
-#if defined(JO_NTSC_VERSION)
-    JO_VDP2_HCNT = 0x275;
-#else
-    JO_VDP2_HCNT = 0x26B;
-#endif
+    #if defined(JO_NTSC_VERSION)
+        JO_VDP2_HCNT = 0x275;
+    #else
+        JO_VDP2_HCNT = 0x26B;
+    #endif
     JO_VDP2_VCNT = 0x36;
     JO_VDP2_RAMCTL = 0x1327;
 
@@ -289,12 +299,12 @@ static void         jo_core_init_vdp(const jo_color back_color)
 /*Credit: slinga-homebrew, fafling and Ponut64
   https://github.com/johannes-fetz/joengine/pull/58
 */
-# if defined(JO_480i)
+#if defined(JO_480i) // this doesnt work for SGL
     JO_VDP2_CRAOFB = 0x0010 | (JO_VDP2_CRAOFB & 0xFF0F);
-#  if defined(JO_COMPILE_WITH_PRINTF_SUPPORT)
-    jo_vdp2_zoom_nbg0(0.5f);
-#  endif
-# endif
+    #if defined(JO_COMPILE_WITH_PRINTF_SUPPORT)
+        jo_vdp2_zoom_nbg0(0.5f);
+    #endif
+#endif
 }
 
 void                    __jo_core_set_screens_order(jo_scroll_screen screen1, ...)

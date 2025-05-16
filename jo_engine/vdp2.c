@@ -56,6 +56,9 @@ void                                jo_vdp2_malloc_init(void);
 #ifndef JO_COMPILE_WITH_PRINTF_SUPPORT
 static unsigned short               *nbg0_map = JO_NULL;
 static unsigned char                *nbg0_cell = JO_NULL;
+static char                         *nbg0_font_str = JO_NULL;
+static unsigned short               nbg0_font_paloff = 0;
+static int                          nbg0_font_map_offset = 0;
 #endif
 static int                          *nbg0_scroll_table = JO_NULL;
 //NBG1
@@ -431,6 +434,69 @@ int                             *jo_vdp2_enable_nbg0_line_scroll(void)
 
 #endif
 
+#if !defined(JO_COMPILE_WITH_PRINTF_SUPPORT) && !defined(JO_DEBUG)
+void                            jo_nbg0_clear(void)
+{
+    register int                i;
+
+
+    for (JO_ZERO(i); i < MAP_LENGTH; ++i)
+        nbg0_map[i] = nbg0_font_paloff + nbg0_font_map_offset;
+}
+
+void			                __jo_set_nbg0_8bits_image(jo_img_8bits *img, bool vertical_flip)
+{
+    if (nbg0_cell != JO_NULL)
+        jo_vdp2_free(nbg0_cell);
+    slPlaneNbg0(PL_SIZE_1x1);
+    slCharNbg0(COL_TYPE_256, CHAR_SIZE_1x1);
+    if (nbg0_map == JO_NULL)
+        nbg0_map = (unsigned short *)jo_vdp2_malloc(JO_VDP2_RAM_MAP_NBG0, JO_VDP2_MAP_SIZE);
+    slMapNbg0(nbg0_map, nbg0_map, nbg0_map, nbg0_map);
+    nbg0_cell = (unsigned char *)jo_vdp2_malloc(JO_VDP2_RAM_CELL_NBG0, img->width * img->height);
+	slPageNbg0(nbg0_cell, 0, PNB_1WORD | CN_12BIT);
+    jo_img_to_vdp2_cells(img, vertical_flip, nbg0_cell);
+}
+
+void                            jo_nbg0_print(int x, int y, char * str)
+{
+    register int                c;
+    register unsigned short     cell;
+
+    x += JO_MULT_BY_64(y);
+    while (*str != '\0')
+    {
+        JO_ZERO(cell);
+        for (JO_ZERO(c); nbg0_font_str[c] != '\0'; ++c)
+        {
+            if (nbg0_font_str[c] == *str)
+            {
+                cell = c;
+                break;
+            }
+        }
+        nbg0_map[x] = (JO_MULT_BY_2(cell) | nbg0_font_paloff) + nbg0_font_map_offset;
+        ++str;
+        ++x;
+    }
+}
+
+void    jo_vdp2_set_nbg0_8bits_font(jo_img_8bits *img, char *mapping, int palette_id, bool vertical_flip, bool enabled)
+{
+    nbg0_font_str = mapping;
+    nbg0_font_paloff = JO_MULT_BY_4096(palette_id);
+    __jo_set_nbg0_8bits_image(img, vertical_flip);
+    nbg0_font_map_offset = JO_VDP2_CELL_TO_MAP_OFFSET(nbg0_cell);
+    jo_nbg0_clear();
+    if (enabled)
+    {
+        JO_ADD_FLAG(screen_flags, NBG0ON);
+        slScrAutoDisp(screen_flags);
+    }
+}
+
+#endif
+
 /*
 ███╗   ██╗██████╗  ██████╗  ██╗
 ████╗  ██║██╔══██╗██╔════╝ ███║
@@ -518,20 +584,12 @@ void			                jo_vdp2_set_nbg1_8bits_image(jo_img_8bits *img, int palet
 
 #endif
 
-void			                jo_vdp2_set_nbg1_image(const jo_img *const img, short left, short top)
+void			                jo_vdp2_set_nbg1_image(const jo_img *const img, const unsigned short left, const unsigned short top)
 {
     register int                y;
-    int                         right;
-    int                         len;
-    int                         bottom;
-    int                         height;
     register jo_color           *vram_ptr;
     register jo_color           *img_ptr;
 
-    if (left >= JO_VDP2_WIDTH || left <= -img->width)
-        return ;
-    if (top >= JO_VDP2_HEIGHT || top <= -img->height)
-        return;
     __jo_switch_to_bitmap_mode();
     if (nbg1_bitmap == JO_NULL)
         nbg1_bitmap = jo_vdp2_malloc(JO_VDP2_RAM_BITMAP_NBG1, JO_VDP2_WIDTH * JO_VDP2_HEIGHT * sizeof(*nbg1_bitmap));
@@ -542,49 +600,20 @@ void			                jo_vdp2_set_nbg1_image(const jo_img *const img, short lef
 #endif
     if (img->data == JO_NULL)
         return ;
-    img_ptr = img->data;
-    JO_ZERO(y);
-    if (top != 0)
-    {
-        if (top < 0)
-        {
-            y = -top;
-            img_ptr += img->width * y;
-            JO_ZERO(top);
-        }
+    if (top)
         vram_ptr = nbg1_bitmap + (JO_VDP2_WIDTH * top);
-    }
     else
         vram_ptr = nbg1_bitmap;
-    bottom = top + img->height;
-    if (bottom >= JO_VDP2_HEIGHT)
-        height = (JO_VDP2_HEIGHT - top - 1);
-    else
-        height = img->height;
-    for (; y < height; ++y)
+    img_ptr = img->data;
+    for (JO_ZERO(y); y < img->height; ++y)
     {
-        if (left > 0)
-        {
+        if (left)
             vram_ptr += left;
-            right = left + img->width;
-            if (right >= JO_VDP2_WIDTH)
-                len = img->width - (right - JO_VDP2_WIDTH);
-            else
-                len = img->width;
-            jo_dma_copy(img_ptr, vram_ptr, len * sizeof(*img_ptr));
+        jo_dma_copy(img_ptr, vram_ptr, img->width * sizeof(*img_ptr));
+        if (left)
             vram_ptr += JO_VDP2_WIDTH - left;
-        }
-        else if (left < 0)
-        {
-            len = img->width + left;
-            jo_dma_copy(img_ptr - left, vram_ptr, len * sizeof(*img_ptr));
-            vram_ptr += JO_VDP2_WIDTH;
-        }
         else
-        {
-            jo_dma_copy(img_ptr, vram_ptr, img->width * sizeof(*img_ptr));
             vram_ptr += JO_VDP2_WIDTH;
-        }
         img_ptr += img->width;
     }
     JO_ADD_FLAG(screen_flags, NBG1ON);
@@ -653,9 +682,12 @@ void			                __jo_set_nbg2_8bits_image(jo_img_8bits *img, bool vertica
     slCharNbg2(COL_TYPE_256, CHAR_SIZE_1x1);
     if (nbg2_map == JO_NULL)
         nbg2_map = (unsigned short *)jo_vdp2_malloc(JO_VDP2_RAM_MAP_NBG2, JO_VDP2_MAP_SIZE);
+        // nbg2_map = 0x60000;
     slMapNbg2(nbg2_map, nbg2_map, nbg2_map, nbg2_map);
     nbg2_cell = (unsigned char *)jo_vdp2_malloc(JO_VDP2_RAM_CELL_NBG2, img->width * img->height);
+    // nbg2_cell = 20000;
 	slPageNbg2(nbg2_cell, 0, PNB_1WORD | CN_12BIT);
+	// slPageNbg2(nbg2_cell, 0, PNB_1WORD | CN_12BIT);
     jo_img_to_vdp2_cells(img, vertical_flip, nbg2_cell);
 }
 
@@ -689,7 +721,7 @@ void                            jo_nbg2_print(int x, int y, char * str)
     }
 }
 
-void			                jo_vdp2_set_nbg2_8bits_font(jo_img_8bits *img, char *mapping, int palette_id, bool vertical_flip, bool enabled)
+void    jo_vdp2_set_nbg2_8bits_font(jo_img_8bits *img, char *mapping, int palette_id, bool vertical_flip, bool enabled)
 {
 #ifdef JO_DEBUG
     if (img->width != 8)
