@@ -68,6 +68,46 @@ void            jo_set_displayed_screens(const jo_scroll_screen scroll_screen_fl
 void            jo_set_default_background_color(const jo_color background_color);
 
 /*
+███╗   ██╗██████╗  ██████╗  ██████╗     ███████╗ ██████╗ ███╗   ██╗████████╗
+████╗  ██║██╔══██╗██╔════╝ ██╔═████╗    ██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝
+██╔██╗ ██║██████╔╝██║  ███╗██║██╔██║    █████╗  ██║   ██║██╔██╗ ██║   ██║
+██║╚██╗██║██╔══██╗██║   ██║████╔╝██║    ██╔══╝  ██║   ██║██║╚██╗██║   ██║
+██║ ╚████║██████╔╝╚██████╔╝╚██████╔╝    ██║     ╚██████╔╝██║ ╚████║   ██║
+╚═╝  ╚═══╝╚═════╝  ╚═════╝  ╚═════╝     ╚═╝      ╚═════╝ ╚═╝  ╚═══╝   ╚═╝
+*/
+
+#if !defined(JO_COMPILE_WITH_PRINTF_SUPPORT) && !defined(JO_DEBUG)
+// I don't remember what I added and what was already here
+/** @brief NBG0 Print implementation
+ *  @param x Horizontal position from top left screen corner
+ *  @param y Vertical position from top left screen corner
+ *  @param str String
+ */
+void    jo_nbg0_print(int x, int y, char * str);
+
+/** @brief NBG0 printf implementation (jo_set_nbg0_8bits_font must be called before)
+ *  @param X Horizontal position from top left screen corner
+ *  @param Y Vertical position from top left screen corner
+ *  @param ... Arguments
+ */
+# define jo_nbg0_printf(X, Y, ...)		do {sprintf(__jo_sprintf_buf, __VA_ARGS__); jo_nbg0_print(X, Y, __jo_sprintf_buf); } while(0)
+
+/** @brief Set 8 bits NBG0 font image
+ *  @param img 8 bits 255 colors max image. (height must be a multiple of 8). Width must be 8.
+ *  @param mapping Image pattern : " 0123456789ABCDEFGH...". The first character must be an empty space.
+ *  @param palette_id palette id from TGA (see also jo_palette)
+ *  @param vertical_flip Flip image vertically
+ *  @param enabled Display NBG0 now
+ *  @warning Image need to be clockwised rotated (right) because of an optimisation
+ */
+void    jo_vdp2_set_nbg0_8bits_font(jo_img_8bits *img, char *mapping, int palette_id, bool vertical_flip, bool enabled);
+
+/** @brief Clear NBG0
+ */
+void    jo_nbg0_clear(void);
+#endif
+
+/*
 ███╗   ██╗██████╗  ██████╗ ██████╗     ██╗██████╗     ███████╗ ██████╗ ███╗   ██╗████████╗
 ████╗  ██║██╔══██╗██╔════╝ ╚════██╗   ██╔╝╚════██╗    ██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝
 ██╔██╗ ██║██████╔╝██║  ███╗ █████╔╝  ██╔╝  █████╔╝    █████╗  ██║   ██║██╔██╗ ██║   ██║
@@ -188,7 +228,7 @@ void    jo_vdp2_set_nbg3_8bits_image(jo_img_8bits *img, int palette_id, bool ver
  *  @param left Left location
  *  @param top Top location
  */
-void	jo_vdp2_set_nbg1_image(const jo_img * const img, short left, short top);
+void	jo_vdp2_set_nbg1_image(const jo_img * const img, const unsigned short left, const unsigned short top);
 
 /** @brief Clear NBG1 bitmap
  *  @param color Clear color

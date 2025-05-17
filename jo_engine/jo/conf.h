@@ -95,6 +95,171 @@
         # define JO_TV_HEIGHT_2						(240)
         /** @brief NTSC Screen height divided by 4 (math optimization purpose) */
         # define JO_TV_HEIGHT_4						(120)
+    #elif defined (MY_TV_704x448)
+        /** @brief Sega Saturn NTSC Screen resolution (internal use) */
+        # define JO_TV_RES							(TV_704x448)
+        /** @brief NTSC Screen width */
+        # define JO_TV_WIDTH						(704)
+        /** @brief NTSC Screen width divided by 2 (math optimization purpose) */
+        # define JO_TV_WIDTH_2						(352)
+        /** @brief NTSC Screen width divided by 4 (math optimization purpose) */
+        # define JO_TV_WIDTH_4						(176)
+        /** @brief NTSC Screen height */
+        # define JO_TV_HEIGHT						(448)
+        /** @brief NTSC Screen height divided by 2 (math optimization purpose) */
+        # define JO_TV_HEIGHT_2						(224)
+        /** @brief NTSC Screen height divided by 4 (math optimization purpose) */
+        # define JO_TV_HEIGHT_4						(112)
+    #elif defined (MY_TV_704x240)
+        /** @brief Sega Saturn NTSC Screen resolution (internal use) */
+        # define JO_TV_RES							(TV_704x240)
+        /** @brief NTSC Screen width */
+        # define JO_TV_WIDTH						(704)
+        /** @brief NTSC Screen width divided by 2 (math optimization purpose) */
+        # define JO_TV_WIDTH_2						(352)
+        /** @brief NTSC Screen width divided by 4 (math optimization purpose) */
+        # define JO_TV_WIDTH_4						(176)
+        /** @brief NTSC Screen height */
+        # define JO_TV_HEIGHT						(240)
+        /** @brief NTSC Screen height divided by 2 (math optimization purpose) */
+        # define JO_TV_HEIGHT_2						(120)
+        /** @brief NTSC Screen height divided by 4 (math optimization purpose) */
+        # define JO_TV_HEIGHT_4						(60)
+    #elif defined (MY_TV_704x224)
+        /** @brief Sega Saturn NTSC Screen resolution (internal use) */
+        # define JO_TV_RES							(TV_704x224)
+        /** @brief NTSC Screen width */
+        # define JO_TV_WIDTH						(704)
+        /** @brief NTSC Screen width divided by 2 (math optimization purpose) */
+        # define JO_TV_WIDTH_2						(352)
+        /** @brief NTSC Screen width divided by 4 (math optimization purpose) */
+        # define JO_TV_WIDTH_4						(176)
+        /** @brief NTSC Screen height */
+        # define JO_TV_HEIGHT						(224)
+        /** @brief NTSC Screen height divided by 2 (math optimization purpose) */
+        # define JO_TV_HEIGHT_2						(112)
+        /** @brief NTSC Screen height divided by 4 (math optimization purpose) */
+        # define JO_TV_HEIGHT_4						(56)
+    #elif defined (MY_TV_352x224)
+        /** @brief Sega Saturn NTSC Screen resolution (internal use) */
+        # define JO_TV_RES							(TV_352x224)
+        /** @brief NTSC Screen width */
+        # define JO_TV_WIDTH						(352)
+        /** @brief NTSC Screen width divided by 2 (math optimization purpose) */
+        # define JO_TV_WIDTH_2						(176)
+        /** @brief NTSC Screen width divided by 4 (math optimization purpose) */
+        # define JO_TV_WIDTH_4						(88)
+        /** @brief NTSC Screen height */
+        # define JO_TV_HEIGHT						(224)
+        /** @brief NTSC Screen height divided by 2 (math optimization purpose) */
+        # define JO_TV_HEIGHT_2						(112)
+        /** @brief NTSC Screen height divided by 4 (math optimization purpose) */
+        # define JO_TV_HEIGHT_4						(56)
+    #elif defined (MY_TV_352x240)
+        /** @brief Sega Saturn NTSC Screen resolution (internal use) */
+        # define JO_TV_RES							(TV_352x240)
+        /** @brief NTSC Screen width */
+        # define JO_TV_WIDTH						(352)
+        /** @brief NTSC Screen width divided by 2 (math optimization purpose) */
+        # define JO_TV_WIDTH_2						(176)
+        /** @brief NTSC Screen width divided by 4 (math optimization purpose) */
+        # define JO_TV_WIDTH_4						(88)
+        /** @brief NTSC Screen height */
+        # define JO_TV_HEIGHT						(240)
+        /** @brief NTSC Screen height divided by 2 (math optimization purpose) */
+        # define JO_TV_HEIGHT_2						(120)
+        /** @brief NTSC Screen height divided by 4 (math optimization purpose) */
+        # define JO_TV_HEIGHT_4						(60)
+    #elif defined (MY_TV_352x448)
+        /** @brief Sega Saturn NTSC Screen resolution (internal use) */
+        # define JO_TV_RES							(TV_352x448)
+        /** @brief NTSC Screen width */
+        # define JO_TV_WIDTH						(352)
+        /** @brief NTSC Screen width divided by 2 (math optimization purpose) */
+        # define JO_TV_WIDTH_2						(176)
+        /** @brief NTSC Screen width divided by 4 (math optimization purpose) */
+        # define JO_TV_WIDTH_4						(88)
+        /** @brief NTSC Screen height */
+        # define JO_TV_HEIGHT						(448)
+        /** @brief NTSC Screen height divided by 2 (math optimization purpose) */
+        # define JO_TV_HEIGHT_2						(224)
+        /** @brief NTSC Screen height divided by 4 (math optimization purpose) */
+        # define JO_TV_HEIGHT_4						(112)
+    #elif defined (MY_TV_352x480)
+        /** @brief Sega Saturn NTSC Screen resolution (internal use) */
+        # define JO_TV_RES							(TV_352x480)
+        /** @brief NTSC Screen width */
+        # define JO_TV_WIDTH						(352)
+        /** @brief NTSC Screen width divided by 2 (math optimization purpose) */
+        # define JO_TV_WIDTH_2						(176)
+        /** @brief NTSC Screen width divided by 4 (math optimization purpose) */
+        # define JO_TV_WIDTH_4						(88)
+        /** @brief NTSC Screen height */
+        # define JO_TV_HEIGHT						(480)
+        /** @brief NTSC Screen height divided by 2 (math optimization purpose) */
+        # define JO_TV_HEIGHT_2						(240)
+        /** @brief NTSC Screen height divided by 4 (math optimization purpose) */
+        # define JO_TV_HEIGHT_4						(120)
+    #elif defined (MY_TV_640x224)
+        /** @brief Sega Saturn NTSC Screen resolution (internal use) */
+        # define JO_TV_RES							(TV_640x224)
+        /** @brief NTSC Screen width */
+        # define JO_TV_WIDTH						(640)
+        /** @brief NTSC Screen width divided by 2 (math optimization purpose) */
+        # define JO_TV_WIDTH_2						(320)
+        /** @brief NTSC Screen width divided by 4 (math optimization purpose) */
+        # define JO_TV_WIDTH_4						(160)
+        /** @brief NTSC Screen height */
+        # define JO_TV_HEIGHT						(224)
+        /** @brief NTSC Screen height divided by 2 (math optimization purpose) */
+        # define JO_TV_HEIGHT_2						(112)
+        /** @brief NTSC Screen height divided by 4 (math optimization purpose) */
+        # define JO_TV_HEIGHT_4						(56)
+    #elif defined (MY_TV_640x240)
+        /** @brief Sega Saturn NTSC Screen resolution (internal use) */
+        # define JO_TV_RES							(TV_640x240)
+        /** @brief NTSC Screen width */
+        # define JO_TV_WIDTH						(640)
+        /** @brief NTSC Screen width divided by 2 (math optimization purpose) */
+        # define JO_TV_WIDTH_2						(320)
+        /** @brief NTSC Screen width divided by 4 (math optimization purpose) */
+        # define JO_TV_WIDTH_4						(160)
+        /** @brief NTSC Screen height */
+        # define JO_TV_HEIGHT						(240)
+        /** @brief NTSC Screen height divided by 2 (math optimization purpose) */
+        # define JO_TV_HEIGHT_2						(120)
+        /** @brief NTSC Screen height divided by 4 (math optimization purpose) */
+        # define JO_TV_HEIGHT_4						(60)
+    #elif defined (MY_TV_640x480)
+        /** @brief Sega Saturn NTSC Screen resolution (internal use) */
+        # define JO_TV_RES							(TV_640x480)
+        /** @brief NTSC Screen width */
+        # define JO_TV_WIDTH						(640)
+        /** @brief NTSC Screen width divided by 2 (math optimization purpose) */
+        # define JO_TV_WIDTH_2						(320)
+        /** @brief NTSC Screen width divided by 4 (math optimization purpose) */
+        # define JO_TV_WIDTH_4						(160)
+        /** @brief NTSC Screen height */
+        # define JO_TV_HEIGHT						(480)
+        /** @brief NTSC Screen height divided by 2 (math optimization purpose) */
+        # define JO_TV_HEIGHT_2						(240)
+        /** @brief NTSC Screen height divided by 4 (math optimization purpose) */
+        # define JO_TV_HEIGHT_4						(120)
+    #elif defined (MY_TV_320x224)
+        /** @brief Sega Saturn NTSC Screen resolution (internal use) */
+        # define JO_TV_RES							(TV_320x224)
+        /** @brief NTSC Screen width */
+        # define JO_TV_WIDTH						(320)
+        /** @brief NTSC Screen width divided by 2 (math optimization purpose) */
+        # define JO_TV_WIDTH_2						(160)
+        /** @brief NTSC Screen width divided by 4 (math optimization purpose) */
+        # define JO_TV_WIDTH_4						(80)
+        /** @brief NTSC Screen height */
+        # define JO_TV_HEIGHT						(224)
+        /** @brief NTSC Screen height divided by 2 (math optimization purpose) */
+        # define JO_TV_HEIGHT_2						(112)
+        /** @brief NTSC Screen height divided by 4 (math optimization purpose) */
+        # define JO_TV_HEIGHT_4						(56)
     #else
         /** @brief Sega Saturn NTSC Screen resolution (internal use) */
         # define JO_TV_RES							(TV_320x240)
@@ -147,11 +312,14 @@
 
 # if defined (JO_480i)
     /** @brief VDP2 Background bitmap size */
-    # define JO_VDP2_SIZE                       (BM_1024x512)
+    // # define JO_VDP2_SIZE                       (BM_1024x512)
+    # define JO_VDP2_SIZE                       (BM_512x256)
     /** @brief VDP2 Background bitmap width */
-    # define JO_VDP2_WIDTH                      (1024)
+    // # define JO_VDP2_WIDTH                      (1024)
+    # define JO_VDP2_WIDTH                      (512)
     /** @brief VDP2 Background bitmap height */
-    # define JO_VDP2_HEIGHT                     (512)
+    // # define JO_VDP2_HEIGHT                     (512)
+    # define JO_VDP2_HEIGHT                     (256)
 #else
     /** @brief VDP2 Background bitmap size */
     # define JO_VDP2_SIZE                       (BM_512x256)
